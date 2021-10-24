@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SpotHero_Backend_Challenge.Controllers
@@ -22,25 +20,31 @@ namespace SpotHero_Backend_Challenge.Controllers
 
         [SwaggerOperation("todo")]
         [HttpPut("rates")]
-        public void Put([FromBody] List<Rate> rate)
+        public void Put([FromBody] List<Rate> rates)
         {
-            // todo
+            Retriever.updateRates(rates);
         }
 
         [SwaggerOperation("todo")]
         [HttpGet("rates")]
         public List<Rate> Get()
         {
-            // todo
-            return new List<Rate>() { new Rate(), new Rate(), new Rate() };
+            return Retriever.getRates();
         }
 
         [SwaggerOperation("todo")]
         [HttpGet("price")]
-        public Rate GetPrice()
+        public Rate GetPrice(DateTime start, DateTime end)
         {
             // todo
-            return new Rate();
+            return Retriever.getRate(start, end);
+        }
+
+        [HttpPut("reset")]
+        [SwaggerOperation("Resets rates per https://github.com/spothero/be-code-challenge#sample-json-for-testing")]
+        public void Reset()
+        {
+            Retriever.seedRates();
         }
 
 
