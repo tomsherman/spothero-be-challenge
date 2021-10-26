@@ -36,7 +36,7 @@ namespace SpotHero_Backend_Challenge
             var rates = Retriever.getRates(); // todo call MongstartoDB
 
             var allRateInstances = new List<RateInstance>();
-            foreach (Rate rate in rates)
+            foreach (Rate rate in rates.rates)
             {
                 allRateInstances.AddRange(generateRateInstance(rate, date.AddDays(-1))); // preceding day
                 allRateInstances.AddRange(generateRateInstance(rate, date));

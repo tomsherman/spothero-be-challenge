@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Annotations;
+using SpotHero_Backend_Challenge.DataClasses;
 
 namespace SpotHero_Backend_Challenge.Controllers
 {
@@ -20,14 +21,14 @@ namespace SpotHero_Backend_Challenge.Controllers
 
         [SwaggerOperation("todo")]
         [HttpPut("rates")]
-        public void Put([FromBody] List<Rate> rates)
+        public void Put([FromBody] Rates rates)
         {
             Retriever.updateRates(rates);
         }
 
         [SwaggerOperation("todo")]
         [HttpGet("rates")]
-        public List<Rate> Get()
+        public Rates Get()
         {
             return Retriever.getRates();
         }

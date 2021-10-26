@@ -13,9 +13,9 @@ namespace SpotHero_Backend_Challenge
     //}
     public class Rate
     {
-        public string days { get; set; }
-        public string times { get; set; }
-        public string tz { get; set; }
-        public int price { get; set; }
+        public string days;
+        public string times;
+        public string tz;
+        public int price;
     }
 }
