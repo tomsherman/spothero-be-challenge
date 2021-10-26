@@ -34,10 +34,24 @@ namespace SpotHero_Backend_Challenge.Controllers
 
         [SwaggerOperation("todo")]
         [HttpGet("price")]
-        public Rate GetPrice(DateTime start, DateTime end)
+        public Price GetPrice(DateTime start, DateTime end)
         {
-            // todo
-            return Retriever.getRate(start, end);
+            Price price = null;
+
+            try
+            {
+                price = RateMatcher.getPrice(start, end);
+            } 
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Response.StatusCode = 412; // precondition failed
+            } 
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+            }
+
+            return price;
         }
 
         [HttpPut("reset")]

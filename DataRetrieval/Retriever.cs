@@ -19,11 +19,6 @@ namespace SpotHero_Backend_Challenge
             fakeData = rates;
         }
 
-        public static Rate getRate(DateTime start, DateTime end)
-        {
-            return new Rate();
-        }
-
         public static void seedRates()
         {
 
