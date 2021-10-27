@@ -12,7 +12,7 @@ namespace SpotHero_Backend_Challenge
             {
                 // use requested start date to generate a slate of rate instances
                 // near the requested timeframe
-                var rateInstances = getRateInstances(start); // use start date to generate slate of 
+                var rateInstances = getRateInstances(start);
                 foreach (RateInstance rateInstance in rateInstances)
                 {
                     if (rateInstance.start <= start && rateInstance.end >= end)
@@ -24,7 +24,7 @@ namespace SpotHero_Backend_Challenge
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Invalid dates");
+                throw new ArgumentOutOfRangeException("Invalid date range.");
             }
 
             // no match
@@ -43,6 +43,7 @@ namespace SpotHero_Backend_Challenge
                 allRateInstances.AddRange(generateRateInstance(rate, date.AddDays(+1))); // next day
             }
 
+            
             return allRateInstances;
         }
 
@@ -52,10 +53,10 @@ namespace SpotHero_Backend_Challenge
 
             // format: "0900-2100",
             var startHHMM = rate.times.Split('-')[0];
-            var endHHMM = rate.times.Split('-')[1];
             var startHour = int.Parse(startHHMM.Substring(0, 2));
             var startMinute = int.Parse(startHHMM.Substring(2));
 
+            var endHHMM = rate.times.Split('-')[1];
             var endHour = int.Parse(endHHMM.Substring(0, 2));
             var endMinute = int.Parse(endHHMM.Substring(2));
 
@@ -64,7 +65,7 @@ namespace SpotHero_Backend_Challenge
             var dateBase = new DateTime(date.Year, date.Month, date.Day);
             var midnight = TimeZoneInfo.ConvertTime(dateBase, tzInfo);
 
-            foreach (string day in rate.days.Split(",")) // todo move to friendlier method
+            foreach (string day in rate.days.Split(",", StringSplitOptions.RemoveEmptyEntries))
             {
                 // todo real date
                 if (midnight.ToString("ddd").ToLower() == day)

@@ -6,7 +6,6 @@ namespace SpotHero_Backend_Challenge
 {
     public class Retriever
     {
-        private static RateCollection fakeData;
         private static MongoClient client = new MongoClient("mongodb://localhost:27017");
         private static IMongoDatabase db = client.GetDatabase("SpotHero");
 
@@ -19,9 +18,10 @@ namespace SpotHero_Backend_Challenge
             };
         }
 
-        public static void updateRates(RateCollection rates)
+        public static void updateRates(RateCollection rateCollection)
         {
-            fakeData = rates;
+            db.DropCollection("Rates");
+            db.GetCollection<Rate>("Rates").InsertMany(rateCollection.rates);
         }
 
         public static void seedRates()

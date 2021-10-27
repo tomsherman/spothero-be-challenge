@@ -41,6 +41,7 @@ namespace SpotHero_Backend_Challenge.Controllers
             try
             {
                 price = RateMatcher.getPrice(start, end);
+                if (price == null) Response.StatusCode = 404; // request was fine, but no matches
             } 
             catch (ArgumentOutOfRangeException ex)
             {
@@ -48,7 +49,7 @@ namespace SpotHero_Backend_Challenge.Controllers
             } 
             catch (Exception ex)
             {
-                Response.StatusCode = 500;
+                Response.StatusCode = 500; // some other problem
             }
 
             return price;
