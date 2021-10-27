@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Driver;
 
 namespace SpotHero_Backend_Challenge
 {
     public class Retriever
     {
         private static RateCollection fakeData;
+        private static MongoClient client = new MongoClient("mongodb://localhost:27017");
+        private static IMongoDatabase db = client.GetDatabase("SpotHero");
 
         public static RateCollection getRates()
         {
-            return fakeData; // todo
+            var rates = db.GetCollection<Rate>("Rates").Find<Rate>(FilterDefinition<Rate>.Empty);
+            return new RateCollection()
+            {
+                rates = rates.ToList<Rate>()
+            };
         }
 
         public static void updateRates(RateCollection rates)
@@ -91,12 +98,9 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            fakeData = new RateCollection()
-            {
-                rates = new List<Rate>() { rate1, rate2, rate3, rate4, rate5 }
-            };
-
+            // clear existing data, then seed with sample data
+            db.DropCollection("Rates");
+            db.GetCollection<Rate>("Rates").InsertMany(new List<Rate>() { rate1, rate2, rate3, rate4, rate5 });
         }
-
     }
 }

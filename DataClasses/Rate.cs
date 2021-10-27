@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
 
 namespace SpotHero_Backend_Challenge
 {
@@ -12,6 +14,10 @@ namespace SpotHero_Backend_Challenge
     //}
     public class Rate
     {
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+        [JsonIgnore]
+        public string id { get; set; }
         public string days { get; set; }
         public string times { get; set; }
         public string tz { get; set; }
