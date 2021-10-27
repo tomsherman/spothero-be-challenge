@@ -24,10 +24,10 @@ namespace SpotHero_Backend_Challenge
             }
             else
             {
-                throw new ArgumentOutOfRangeException("Invalid date range.");
+                throw new ArgumentOutOfRangeException("Invalid date range. Specify a range of 24 hours or less.");
             }
 
-            // no match
+            // valid input but no matching rate instance
             return null;
         }
 
@@ -62,7 +62,7 @@ namespace SpotHero_Backend_Challenge
 
             var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(rate.tz);
 
-            var dateBase = new DateTime(date.Year, date.Month, date.Day);
+            var dateBase = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
             var midnight = TimeZoneInfo.ConvertTime(dateBase, tzInfo);
 
             foreach (string day in rate.days.Split(",", StringSplitOptions.RemoveEmptyEntries))
@@ -70,8 +70,8 @@ namespace SpotHero_Backend_Challenge
                 // todo real date
                 if (midnight.ToString("ddd").ToLower() == day)
                 {
-                    var rateInstanceStart = midnight.AddHours(startHour).AddMinutes(startMinute);
-                    var rateInstanceEnd= midnight.AddHours(endHour).AddMinutes(endMinute);
+                    var rateInstanceStart = TimeZoneInfo.ConvertTime(midnight.AddHours(startHour).AddMinutes(startMinute), tzInfo);
+                    var rateInstanceEnd = TimeZoneInfo.ConvertTime(midnight.AddHours(endHour).AddMinutes(endMinute), tzInfo);
 
                     rateInstances.Add(new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.price));
                 }

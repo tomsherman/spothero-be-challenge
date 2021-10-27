@@ -13,14 +13,22 @@ namespace SpotHero_Backend_Challenge
         public static ParkingRateCollection getRates()
         {
             var rates = db.GetCollection<ParkingRate>("Rates").Find<ParkingRate>(FilterDefinition<ParkingRate>.Empty);
-            return new ParkingRateCollection()
-            {
-                rates = rates.ToList<ParkingRate>()
-            };
+            return new ParkingRateCollection(rates.ToList<ParkingRate>());
         }
 
         public static void updateRates(ParkingRateCollection rateCollection)
         {
+            if (rateCollection == null) throw new ArgumentNullException();
+            if (rateCollection.rates == null) throw new ArgumentNullException();
+            if (rateCollection.rates.Count == 0) throw new ArgumentException();
+
+            // test validity of input rates by creating rate instances
+            // if any rate is invalid, an exception is thrown, and the update will fail in its entirety
+            foreach(ParkingRate rate in rateCollection.rates)
+            {
+                var testInstances = ParkingRateInstance.getRateInstances(rate, DateTime.Now);
+            }
+
             db.DropCollection("Rates");
             db.GetCollection<ParkingRate>("Rates").InsertMany(rateCollection.rates);
         }
@@ -99,23 +107,8 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            // clear existing data, then seed with sample data
-            db.DropCollection("Rates");
-            db.GetCollection<ParkingRate>("Rates").InsertMany(new List<ParkingRate>() { rate1, rate2, rate3, rate4, rate5 });
+            var sampleRates = new ParkingRateCollection(new List<ParkingRate>() { rate1, rate2, rate3, rate4, rate5 });
+            updateRates(sampleRates);
         }
-
-        /// <summary>
-        /// Validates rates by attempting to create rate instances for each rate
-        /// </summary>
-        /// <param name="rateCollection"></param>
-        /// <returns>throws exception if invalid</returns>
-        //private static bool validateRates(ParkingRateCollection rateCollection)
-        //{
-        //    foreach(ParkingRate rate in rateCollection.rates)
-        //    {
-        //        new ParkingRateInstance()
-        //    }
-        //}
-
     }
 }

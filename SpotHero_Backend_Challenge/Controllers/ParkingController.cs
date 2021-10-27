@@ -18,22 +18,48 @@ namespace SpotHero_Backend_Challenge
             _logger = logger;
         }
 
-        [SwaggerOperation("todo")]
+        [SwaggerOperation("Retrieves all available parking rates")]
         [HttpGet("rates")]
+        [SwaggerResponse(200, "Current rates successfully retrieved")]
+        [SwaggerResponse(500, "Unspecified error")]
         public ParkingRateCollection Get()
         {
-            return Retriever.getRates();
+            ParkingRateCollection rateCollection = null;
+
+            try
+            {
+                rateCollection = Retriever.getRates();
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+            }
+
+            return rateCollection;
         }
 
-        [SwaggerOperation("todo")]
+        [SwaggerOperation("Clears existing rates and sets a new collection of parking rates")]
         [HttpPut("rates")]
+        [SwaggerResponse(200, "Rates successfully added")]
+        [SwaggerResponse(500, "Unspecified error")]
         public void Put([FromBody] ParkingRateCollection rates)
         {
-            Retriever.updateRates(rates);
+            try
+            {
+                Retriever.updateRates(rates);
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+            }
         }
 
-        [SwaggerOperation("todo")]
+        [SwaggerOperation("Retrieves the price of a parking spot available during the specified time frame")]
         [HttpGet("price")]
+        [SwaggerResponse(404, "No parking available for the specified time frame")]
+        [SwaggerResponse(200, "Price of parking for the specified time frame")]
+        [SwaggerResponse(412, "Invalid input")]
+        [SwaggerResponse(500, "Unspecified error")]
         public Price GetPrice(DateTime start, DateTime end)
         {
             Price price = null;
@@ -56,10 +82,20 @@ namespace SpotHero_Backend_Challenge
         }
 
         [HttpPut("reset")]
-        [SwaggerOperation("Resets rates per https://github.com/spothero/be-code-challenge#sample-json-for-testing")]
+        [SwaggerOperation("Resets rates to the specified defaults", "Default rates: https://github.com/spothero/be-code-challenge#sample-json-for-testing")]
+        [SwaggerResponse(200, "All data cleared")]
+        [SwaggerResponse(500, "Unspecified error")]
         public void Reset()
         {
-            Retriever.seedRates();
+            try
+            {
+                Retriever.seedRates();
+            }
+            catch
+            {
+                Response.StatusCode = 500;
+            }
+            
         }
 
 

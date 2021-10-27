@@ -1,7 +1,6 @@
 using System;
 using Xunit;
 using FluentAssertions;
-using SpotHero_Backend_Challenge;
 
 namespace SpotHero_Backend_Challenge.Tests.UnitTests
 {
@@ -18,7 +17,7 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         }
 
         [Theory]
-        [InlineData(1)]
+        [InlineData(10)]
         public void ValidPrice(int price)
         {
             Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(-1), DateTime.Now, price);
@@ -26,9 +25,17 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         }
 
         [Fact]
-        public void InvalidDateRange()
+        public void InvalidDateRange_Same()
         {
-            Action instantiation = () => new ParkingRateInstance(DateTime.Now, DateTime.Now, 10);
+            var now = DateTime.Now;
+            Action instantiation = () => new ParkingRateInstance(now, now, 10);
+            instantiation.Should().Throw<ArgumentOutOfRangeException>();
+        }
+
+        [Fact]
+        public void InvalidDateRange_StartEndInvalid()
+        {
+            Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(1), DateTime.Now, 10);
             instantiation.Should().Throw<ArgumentOutOfRangeException>();
         }
 

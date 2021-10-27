@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace SpotHero_Backend_Challenge
 {
@@ -18,9 +19,13 @@ namespace SpotHero_Backend_Challenge
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         [JsonIgnore]
         public string id { get; set; }
+        [Required]
         public string days { get; set; }
+        [Required]
         public string times { get; set; }
+        [Required]
         public string tz { get; set; }
+        [Required]
         public int price { get; set; }
     }
 }

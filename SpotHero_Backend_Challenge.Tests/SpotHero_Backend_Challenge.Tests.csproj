@@ -21,11 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
-    <Folder Include="IntegrationTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SpotHero_Backend_Challenge\SpotHero_Backend_Challenge.csproj" />
   </ItemGroup>
 
