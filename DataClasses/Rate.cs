@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace SpotHero_Backend_Challenge
 {
@@ -13,9 +12,9 @@ namespace SpotHero_Backend_Challenge
     //}
     public class Rate
     {
-        public string days;
-        public string times;
-        public string tz;
-        public int price;
+        public string days { get; set; }
+        public string times { get; set; }
+        public string tz { get; set; }
+        public int price { get; set; }
     }
 }

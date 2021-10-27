@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using SpotHero_Backend_Challenge.DataClasses;
 
 namespace SpotHero_Backend_Challenge
 {
     public class Retriever
     {
-        private static Rates fakeData;
+        private static RateCollection fakeData;
 
-        public static Rates getRates()
+        public static RateCollection getRates()
         {
             return fakeData; // todo
         }
 
-        public static void updateRates(Rates rates)
+        public static void updateRates(RateCollection rates)
         {
             fakeData = rates;
         }
@@ -92,7 +91,7 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            fakeData = new Rates()
+            fakeData = new RateCollection()
             {
                 rates = new List<Rate>() { rate1, rate2, rate3, rate4, rate5 }
             };
