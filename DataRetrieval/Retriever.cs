@@ -6,7 +6,8 @@ namespace SpotHero_Backend_Challenge
 {
     public class Retriever
     {
-        private static MongoClient client = new MongoClient("mongodb://localhost:27017");
+        private static MongoClient client = new MongoClient("mongodb://default-whatevs:DFrMN1f2ApCC3q0la7sZGIipAeEntn1DKs9uH4pBLH8z35yROCpD9M0qXGF9ZTuaQ5vAvSapxHQXUBXGYIRbaQ==@default-whatevs.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@default-whatevs@");  
+        //"mongodb://localhost:27017");
         private static IMongoDatabase db = client.GetDatabase("SpotHero");
 
         public static RateCollection getRates()
