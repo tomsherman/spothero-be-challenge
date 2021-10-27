@@ -13,7 +13,7 @@ namespace SpotHero_Backend_Challenge
                 // use requested start date to generate a slate of rate instances
                 // near the requested timeframe
                 var rateInstances = getRateInstances(start);
-                foreach (RateInstance rateInstance in rateInstances)
+                foreach (ParkingRateInstance rateInstance in rateInstances)
                 {
                     if (rateInstance.start <= start && rateInstance.end >= end)
                     {
@@ -31,12 +31,12 @@ namespace SpotHero_Backend_Challenge
             return null;
         }
 
-        private static List<RateInstance> getRateInstances(DateTime date)
+        private static List<ParkingRateInstance> getRateInstances(DateTime date)
         {
-            var rates = Retriever.getRates(); // todo call MongstartoDB
+            var rates = Retriever.getRates();
 
-            var allRateInstances = new List<RateInstance>();
-            foreach (Rate rate in rates.rates)
+            var allRateInstances = new List<ParkingRateInstance>();
+            foreach (ParkingRate rate in rates.rates)
             {
                 allRateInstances.AddRange(generateRateInstance(rate, date.AddDays(-1))); // preceding day
                 allRateInstances.AddRange(generateRateInstance(rate, date));
@@ -47,9 +47,9 @@ namespace SpotHero_Backend_Challenge
             return allRateInstances;
         }
 
-        private static List<RateInstance> generateRateInstance(Rate rate, DateTime date)
+        private static List<ParkingRateInstance> generateRateInstance(ParkingRate rate, DateTime date)
         {
-            var rateInstances = new List<RateInstance>();
+            var rateInstances = new List<ParkingRateInstance>();
 
             // format: "0900-2100",
             var startHHMM = rate.times.Split('-')[0];
@@ -73,11 +73,7 @@ namespace SpotHero_Backend_Challenge
                     var rateInstanceStart = midnight.AddHours(startHour).AddMinutes(startMinute);
                     var rateInstanceEnd= midnight.AddHours(endHour).AddMinutes(endMinute);
 
-                    rateInstances.Add(new RateInstance() { 
-                        start = rateInstanceStart,
-                        end = rateInstanceEnd,
-                        price = new Price { price = rate.price }
-                    });
+                    rateInstances.Add(new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.price));
                 }
             }
 

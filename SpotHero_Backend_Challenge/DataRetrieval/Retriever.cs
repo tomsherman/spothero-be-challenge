@@ -10,19 +10,19 @@ namespace SpotHero_Backend_Challenge
         //"mongodb://localhost:27017");
         private static IMongoDatabase db = client.GetDatabase("SpotHero");
 
-        public static RateCollection getRates()
+        public static ParkingRateCollection getRates()
         {
-            var rates = db.GetCollection<Rate>("Rates").Find<Rate>(FilterDefinition<Rate>.Empty);
-            return new RateCollection()
+            var rates = db.GetCollection<ParkingRate>("Rates").Find<ParkingRate>(FilterDefinition<ParkingRate>.Empty);
+            return new ParkingRateCollection()
             {
-                rates = rates.ToList<Rate>()
+                rates = rates.ToList<ParkingRate>()
             };
         }
 
-        public static void updateRates(RateCollection rateCollection)
+        public static void updateRates(ParkingRateCollection rateCollection)
         {
             db.DropCollection("Rates");
-            db.GetCollection<Rate>("Rates").InsertMany(rateCollection.rates);
+            db.GetCollection<ParkingRate>("Rates").InsertMany(rateCollection.rates);
         }
 
         public static void seedRates()
@@ -63,35 +63,35 @@ namespace SpotHero_Backend_Challenge
             //    ]
             //}
 
-            var rate1 = new Rate()
+            var rate1 = new ParkingRate()
             {
                 days = "mon,tues,thurs",
                 times = "0900-2100",
                 tz = "America/Chicago",
                 price = 1500
             };
-            var rate2 = new Rate()
+            var rate2 = new ParkingRate()
             {
                 days = "fri,sat,sun",
                 times = "0900-2100",
                 tz = "America/Chicago",
                 price = 2000
             };
-            var rate3 = new Rate()
+            var rate3 = new ParkingRate()
             {
                 days = "wed",
                 times = "0600-1800",
                 tz = "America/Chicago",
                 price = 1750
             };
-            var rate4 = new Rate()
+            var rate4 = new ParkingRate()
             {
                 days = "mon,wed,sat",
                 times = "0100-0500",
                 tz = "America/Chicago",
                 price = 1000
             };
-            var rate5 = new Rate()
+            var rate5 = new ParkingRate()
             {
                 days = "sun,tues",
                 times = "0100-0700",
@@ -101,7 +101,21 @@ namespace SpotHero_Backend_Challenge
 
             // clear existing data, then seed with sample data
             db.DropCollection("Rates");
-            db.GetCollection<Rate>("Rates").InsertMany(new List<Rate>() { rate1, rate2, rate3, rate4, rate5 });
+            db.GetCollection<ParkingRate>("Rates").InsertMany(new List<ParkingRate>() { rate1, rate2, rate3, rate4, rate5 });
         }
+
+        /// <summary>
+        /// Validates rates by attempting to create rate instances for each rate
+        /// </summary>
+        /// <param name="rateCollection"></param>
+        /// <returns>throws exception if invalid</returns>
+        //private static bool validateRates(ParkingRateCollection rateCollection)
+        //{
+        //    foreach(ParkingRate rate in rateCollection.rates)
+        //    {
+        //        new ParkingRateInstance()
+        //    }
+        //}
+
     }
 }

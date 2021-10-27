@@ -12,7 +12,7 @@ namespace SpotHero_Backend_Challenge
     //    "tz": "America/Chicago",
     //    "price": 1500
     //}
-    public class Rate
+    public class ParkingRate
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]

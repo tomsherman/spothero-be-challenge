@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace SpotHero_Backend_Challenge.Controllers
+namespace SpotHero_Backend_Challenge
 {
     [ApiController]
     [Route("[controller]")]
@@ -19,17 +19,17 @@ namespace SpotHero_Backend_Challenge.Controllers
         }
 
         [SwaggerOperation("todo")]
-        [HttpPut("rates")]
-        public void Put([FromBody] RateCollection rates)
+        [HttpGet("rates")]
+        public ParkingRateCollection Get()
         {
-            Retriever.updateRates(rates);
+            return Retriever.getRates();
         }
 
         [SwaggerOperation("todo")]
-        [HttpGet("rates")]
-        public RateCollection Get()
+        [HttpPut("rates")]
+        public void Put([FromBody] ParkingRateCollection rates)
         {
-            return Retriever.getRates();
+            Retriever.updateRates(rates);
         }
 
         [SwaggerOperation("todo")]
