@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SpotHero_Backend_Challenge
 {
     /// <summary>
-    /// Represents an instance of an offered rate that encompasses <= 24 hours of parking time
+    /// Represents an instance of an offered rate that encompasses lte 24 hours of parking time
     /// </summary>
     public class ParkingRateInstance
     {

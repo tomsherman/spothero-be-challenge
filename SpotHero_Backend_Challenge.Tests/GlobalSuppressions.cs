@@ -6,4 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~M:SpotHero_Backend_Challenge.Tests.IntegrationTests.Test_Retriever.getRateCollection~SpotHero_Backend_Challenge.ParkingRateCollection")]
-[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~P:SpotHero_Backend_Challenge.Tests.IntegrationTests.Test_RateMatcher.tuesday10AM")]
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "member", Target = "~P:SpotHero_Backend_Challenge.Tests.IntegrationTests.Test_RateMatcher.tuesday10AM_Chicago")]

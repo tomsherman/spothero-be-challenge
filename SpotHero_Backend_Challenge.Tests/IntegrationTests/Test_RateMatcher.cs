@@ -18,7 +18,22 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            var price = RateMatcher.GetPrice(tuesday10AM, tuesday10AM.AddHours(1));
+            var price = RateMatcher.GetPrice(tuesday10AM_Chicago, tuesday10AM_Chicago.AddHours(1));
+            price.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void ValidPriceMaxDuration()
+        {
+            Retriever.SeedRates(); // idempotent
+
+            //{
+            //  "days": "mon,tues,thurs",
+            //	"times": "0900-2100",
+            //	"tz": "America/Chicago",
+            //	"price": 1500
+            //}
+            var price = RateMatcher.GetPrice(tuesday10AM_Chicago.AddHours(-1), tuesday10AM_Chicago.AddHours(11));
             price.Should().NotBeNull();
         }
 
@@ -33,7 +48,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            var price = RateMatcher.GetPrice(tuesday10AM.AddHours(-2), tuesday10AM);
+            var price = RateMatcher.GetPrice(tuesday10AM_Chicago.AddHours(-2), tuesday10AM_Chicago);
             price.Should().BeNull();
         }
 
@@ -48,7 +63,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM.AddDays(-1), tuesday10AM.AddMinutes(1));
+            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM_Chicago.AddDays(-1), tuesday10AM_Chicago.AddMinutes(1));
             retrieval.Should().Throw<ArgumentOutOfRangeException>();
         }
 
@@ -63,7 +78,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM, tuesday10AM);
+            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM_Chicago, tuesday10AM_Chicago);
             retrieval.Should().Throw<ArgumentOutOfRangeException>();
         }
 
@@ -78,11 +93,11 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM.AddMinutes(1), tuesday10AM.AddMinutes(-1));
+            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM_Chicago.AddMinutes(1), tuesday10AM_Chicago.AddMinutes(-1));
             retrieval.Should().Throw<ArgumentOutOfRangeException>();
         }
 
-        private DateTime tuesday10AM { 
+        private DateTime tuesday10AM_Chicago { 
             get
             {
                 var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("America/Chicago");

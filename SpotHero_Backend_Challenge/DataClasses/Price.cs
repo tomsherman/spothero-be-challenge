@@ -14,8 +14,5 @@ namespace SpotHero_Backend_Challenge
             if (price < 0) throw new ArgumentOutOfRangeException();
             this.price = price;
         }
-
-        // disallow parameterless constructor
-        private Price() { }
     }
 }

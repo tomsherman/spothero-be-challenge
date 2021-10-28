@@ -19,6 +19,11 @@ namespace SpotHero_Backend_Challenge
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         [JsonIgnore]
         public string id { get; set; }
+
+        /// <summary>
+        /// Comma-delimited list of days
+        /// </summary>
+        /// <remarks>Valid values: mon,tues,wed,thurs,fri,sat,sun (note non-standard</remarks>
         [Required]
         public string days { get; set; }
         [Required]

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SpotHero_Backend_Challenge</name>
+    </assembly>
+    <members>
+        <member name="T:SpotHero_Backend_Challenge.ParkingRateInstance">
+            <summary>
+            Represents an instance of an offered rate that encompasses lte 24 hours of parking time
+            </summary>
+        </member>
+        <member name="P:SpotHero_Backend_Challenge.UnverifiedParkingRateInput.days">
+            <summary>
+            Comma-delimited list of days
+            </summary>
+            <remarks>Valid values: mon,tues,wed,thurs,fri,sat,sun (note non-standard</remarks>
+        </member>
+    </members>
+</doc>
