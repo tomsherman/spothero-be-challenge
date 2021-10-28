@@ -11,20 +11,20 @@ namespace SpotHero_Backend_Challenge
     /// </summary>
     public class ParkingRateInstance
     {
-        public Price price { get; set; }
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public Price Price { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
 
         public ParkingRateInstance(DateTime start, DateTime end, int price)
         {
             validateInputs(start, end, price);
 
-            this.start = start;
-            this.end = end;
-            this.price = new Price(price);
+            this.Start = start;
+            this.End = end;
+            this.Price = new Price(price);
         }
 
-        public static ParkingRateInstance getRateInstance(VerifiedParkingRate rate, DateTime date)
+        public static ParkingRateInstance GetRateInstance(VerifiedParkingRate rate, DateTime date)
         {
             if (rate == null) throw new ArgumentNullException();
             if (date == null) throw new ArgumentNullException();
@@ -34,14 +34,14 @@ namespace SpotHero_Backend_Challenge
             var abbrevDay = date.ToString("ddd").ToLower(); // e.g. "tue"
 
             var dateBase = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
-            var midnight = TimeZoneInfo.ConvertTime(dateBase, rate.tzInfo);
+            var midnight = TimeZoneInfo.ConvertTime(dateBase, rate.TzInfo);
 
             // compare day of input date to day in rate definition
-            if (abbrevDay == rate.dayOfWeek)
+            if (abbrevDay == rate.DayOfWeek)
             {
-                var rateInstanceStart = midnight.AddHours(rate.startHour).AddMinutes(rate.startMinute);
-                var rateInstanceEnd = midnight.AddHours(rate.endHour).AddMinutes(rate.endMinute);
-                rateInstance = new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.price);
+                var rateInstanceStart = midnight.AddHours(rate.StartHour).AddMinutes(rate.StartMinute);
+                var rateInstanceEnd = midnight.AddHours(rate.EndHour).AddMinutes(rate.EndMinute);
+                rateInstance = new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.Price);
             }
 
             return rateInstance;

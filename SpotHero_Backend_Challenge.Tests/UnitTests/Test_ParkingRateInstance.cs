@@ -45,7 +45,7 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
             Action factory = () =>
             {
                 //var verifiedRate = new VerifiedParkingRate("mon", 5, 0, 10, 0, TimeZoneInfo.Local, 1000);
-                ParkingRateInstance.getRateInstance(null, DateTime.Now);
+                ParkingRateInstance.GetRateInstance(null, DateTime.Now);
             };
             factory.Should().Throw<ArgumentNullException>();
         }

@@ -6,16 +6,16 @@ namespace SpotHero_Backend_Challenge
 {
     public class Retriever
     {
-        private static MongoClient client = new MongoClient("mongodb://default-whatevs:DFrMN1f2ApCC3q0la7sZGIipAeEntn1DKs9uH4pBLH8z35yROCpD9M0qXGF9ZTuaQ5vAvSapxHQXUBXGYIRbaQ==@default-whatevs.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@default-whatevs@");  
-        private static IMongoDatabase db = client.GetDatabase("SpotHero");
+        private readonly static MongoClient client = new MongoClient("mongodb://default-whatevs:DFrMN1f2ApCC3q0la7sZGIipAeEntn1DKs9uH4pBLH8z35yROCpD9M0qXGF9ZTuaQ5vAvSapxHQXUBXGYIRbaQ==@default-whatevs.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@default-whatevs@");  
+        private readonly static IMongoDatabase db = client.GetDatabase("SpotHero");
 
-        public static ParkingRateCollection getRates()
+        public static ParkingRateCollection GetRates()
         {
             var rates = db.GetCollection<UnverifiedParkingRateInput>("Rates").Find<UnverifiedParkingRateInput>(FilterDefinition<UnverifiedParkingRateInput>.Empty);
             return new ParkingRateCollection(rates.ToList<UnverifiedParkingRateInput>());
         }
 
-        public static void updateRates(ParkingRateCollection rateCollection)
+        public static void UpdateRates(ParkingRateCollection rateCollection)
         {
             if (rateCollection == null) throw new ArgumentNullException();
             if (rateCollection.rates == null) throw new ArgumentNullException();
@@ -25,14 +25,14 @@ namespace SpotHero_Backend_Challenge
             // if any rate is invalid, an exception is thrown, and the update will fail in its entirety
             foreach(UnverifiedParkingRateInput rate in rateCollection.rates)
             {
-                VerifiedParkingRate.getVerifiedRates(rate);
+                VerifiedParkingRate.GetVerifiedRates(rate);
             }
 
             db.DropCollection("Rates");
             db.GetCollection<UnverifiedParkingRateInput>("Rates").InsertMany(rateCollection.rates);
         }
 
-        public static void seedRates()
+        public static void SeedRates()
         {
 
             // {
@@ -107,7 +107,7 @@ namespace SpotHero_Backend_Challenge
             };
 
             var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
-            updateRates(sampleRates);
+            UpdateRates(sampleRates);
         }
     }
 }

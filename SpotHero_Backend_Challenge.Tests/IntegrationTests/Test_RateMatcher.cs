@@ -10,7 +10,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void ValidPrice()
         {
-            Retriever.seedRates(); // idempotent
+            Retriever.SeedRates(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -18,14 +18,14 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            var price = RateMatcher.getPrice(tuesday10AM, tuesday10AM.AddHours(1));
+            var price = RateMatcher.GetPrice(tuesday10AM, tuesday10AM.AddHours(1));
             price.Should().NotBeNull();
         }
 
         [Fact]
         public void NoParkingRateAvailable()
         {
-            Retriever.seedRates(); // idempotent
+            Retriever.SeedRates(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -33,14 +33,14 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            var price = RateMatcher.getPrice(tuesday10AM.AddHours(-2), tuesday10AM);
+            var price = RateMatcher.GetPrice(tuesday10AM.AddHours(-2), tuesday10AM);
             price.Should().BeNull();
         }
 
         [Fact]
         public void InvalidTimeFrame_MoreThan24Hours()
         {
-            Retriever.seedRates(); // idempotent
+            Retriever.SeedRates(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -48,14 +48,14 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            Action retrieval = () => RateMatcher.getPrice(tuesday10AM.AddDays(-1), tuesday10AM.AddMinutes(1));
+            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM.AddDays(-1), tuesday10AM.AddMinutes(1));
             retrieval.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]
         public void InvalidTimeFrame_NoActualTimeRange()
         {
-            Retriever.seedRates(); // idempotent
+            Retriever.SeedRates(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -63,14 +63,14 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            Action retrieval = () => RateMatcher.getPrice(tuesday10AM, tuesday10AM);
+            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM, tuesday10AM);
             retrieval.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]
         public void InvalidTimeFrame_IllogicalTimeFrame()
         {
-            Retriever.seedRates(); // idempotent
+            Retriever.SeedRates(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -78,7 +78,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             //	"tz": "America/Chicago",
             //	"price": 1500
             //}
-            Action retrieval = () => RateMatcher.getPrice(tuesday10AM.AddMinutes(1), tuesday10AM.AddMinutes(-1));
+            Action retrieval = () => RateMatcher.GetPrice(tuesday10AM.AddMinutes(1), tuesday10AM.AddMinutes(-1));
             retrieval.Should().Throw<ArgumentOutOfRangeException>();
         }
 

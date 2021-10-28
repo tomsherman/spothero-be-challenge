@@ -11,12 +11,12 @@ namespace SpotHero_Backend_Challenge
     public class ParkingController : ControllerBase
     {
 
-        private readonly ILogger<ParkingController> _logger;
+        //private readonly ILogger<ParkingController> _logger;
 
-        public ParkingController(ILogger<ParkingController> logger)
-        {
-            _logger = logger;
-        }
+        //public ParkingController(ILogger<ParkingController> logger)
+        //{
+        //    _logger = logger;
+        //}
 
         [SwaggerOperation("Retrieves all available parking rates")]
         [HttpGet("rates")]
@@ -28,7 +28,7 @@ namespace SpotHero_Backend_Challenge
 
             try
             {
-                rateCollection = Retriever.getRates();
+                rateCollection = Retriever.GetRates();
             }
             catch
             {
@@ -46,7 +46,7 @@ namespace SpotHero_Backend_Challenge
         {
             try
             {
-                Retriever.updateRates(rates);
+                Retriever.UpdateRates(rates);
             }
             catch
             {
@@ -66,14 +66,14 @@ namespace SpotHero_Backend_Challenge
 
             try
             {
-                price = RateMatcher.getPrice(start, end);
+                price = RateMatcher.GetPrice(start, end);
                 if (price == null) Response.StatusCode = 404; // request was fine, but no matches
             } 
-            catch (ArgumentOutOfRangeException ex)
+            catch (ArgumentOutOfRangeException)
             {
                 Response.StatusCode = 412; // precondition failed
             } 
-            catch (Exception ex)
+            catch (Exception)
             {
                 Response.StatusCode = 500; // some other problem
             }
@@ -89,7 +89,7 @@ namespace SpotHero_Backend_Challenge
         {
             try
             {
-                Retriever.seedRates();
+                Retriever.SeedRates();
             }
             catch
             {

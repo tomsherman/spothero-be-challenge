@@ -5,7 +5,7 @@ namespace SpotHero_Backend_Challenge
 {
     public class RateMatcher
     {
-        public static Price getPrice(DateTime start, DateTime end)
+        public static Price GetPrice(DateTime start, DateTime end)
         {
             var timeSpan = end - start;
             if (timeSpan.TotalDays <= 0 || timeSpan.TotalDays > 1)
@@ -16,10 +16,10 @@ namespace SpotHero_Backend_Challenge
             var rateInstances = getRateInstances(start);
             foreach (ParkingRateInstance rateInstance in rateInstances)
             {
-                if (rateInstance.start <= start && rateInstance.end >= end)
+                if (rateInstance.Start <= start && rateInstance.End >= end)
                 {
                     // guaranteed no overlap; exit early
-                    return rateInstance.price;
+                    return rateInstance.Price;
                 }
             }
 
@@ -30,14 +30,14 @@ namespace SpotHero_Backend_Challenge
         private static List<ParkingRateInstance> getRateInstances(DateTime date)
         {
             var rateInstances = new List<ParkingRateInstance>();
-            var rateCollection = Retriever.getRates();
+            var rateCollection = Retriever.GetRates();
 
             foreach (UnverifiedParkingRateInput rateInput in rateCollection.rates)
             {
-                var verifiedRates = VerifiedParkingRate.getVerifiedRates(rateInput);
+                var verifiedRates = VerifiedParkingRate.GetVerifiedRates(rateInput);
                 foreach(VerifiedParkingRate verifiedRate in verifiedRates)
                 {
-                    var instance = ParkingRateInstance.getRateInstance(verifiedRate, date);
+                    var instance = ParkingRateInstance.GetRateInstance(verifiedRate, date);
                     if (instance != null) rateInstances.Add(instance);
                 }
             }

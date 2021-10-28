@@ -10,30 +10,32 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void RatesPresentInDb()
         {
-            var rates = Retriever.getRates();
+            var rates = Retriever.GetRates();
             rates.Should().NotBeNull();
         }
 
         [Fact]
         public void UpdateRatesInDb()
         {
-            Action update = () => Retriever.updateRates(getRateCollection());
+            Action update = () => Retriever.UpdateRates(getRateCollection());
             update.Should().NotThrow();
         }
 
         [Fact]
         public void SeedRates()
         {
-            Action seed = () => Retriever.seedRates();
+            Action seed = () => Retriever.SeedRates();
             seed.Should().NotThrow();
         }
 
         private static ParkingRateCollection getRateCollection()
         {
-            var inputs = new List<UnverifiedParkingRateInput>();
-            inputs.Add(new UnverifiedParkingRateInput() { days = "mon,tue", price = 1000, times = "0900-1500", tz = "America/Chicago" });
-            inputs.Add(new UnverifiedParkingRateInput() { days = "mon,tue", price = 2000, times = "1500-1800", tz = "America/Chicago" });
-            inputs.Add(new UnverifiedParkingRateInput() { days = "wed,sat", price = 3000, times = "1000-1800", tz = "America/Chicago" });
+            var inputs = new List<UnverifiedParkingRateInput>
+            {
+                new UnverifiedParkingRateInput() { days = "mon,tue", price = 1000, times = "0900-1500", tz = "America/Chicago" },
+                new UnverifiedParkingRateInput() { days = "mon,tue", price = 2000, times = "1500-1800", tz = "America/Chicago" },
+                new UnverifiedParkingRateInput() { days = "wed,sat", price = 3000, times = "1000-1800", tz = "America/Chicago" }
+            };
             return new ParkingRateCollection(inputs);
         }
     }

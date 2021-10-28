@@ -13,15 +13,15 @@ namespace SpotHero_Backend_Challenge
     //}
     public class VerifiedParkingRate
     {
-        public string dayOfWeek { get; set; }
-        public int startHour { get; set; }
-        public int startMinute { get; set; }
-        public int endHour { get; set; }
-        public int endMinute { get; set; }
-        public TimeZoneInfo tzInfo { get; set; }
-        public int price { get; set; }
+        public string DayOfWeek { get; set; }
+        public int StartHour { get; set; }
+        public int StartMinute { get; set; }
+        public int EndHour { get; set; }
+        public int EndMinute { get; set; }
+        public TimeZoneInfo TzInfo { get; set; }
+        public int Price { get; set; }
 
-        private static Dictionary<string, string> nonStandardDayOfWeekDictionary = new Dictionary<string, string>() { 
+        private readonly static Dictionary<string, string> nonStandardDayOfWeekDictionary = new Dictionary<string, string>() { 
             { "mon", "mon" },
             { "tue", "tue" },
             { "tues", "tue" },
@@ -47,16 +47,16 @@ namespace SpotHero_Backend_Challenge
             if (startHour > endHour) throw new ArgumentException();
             if (startHour == endHour && startMinute >= endMinute) throw new ArgumentException();
 
-            this.dayOfWeek = dayOfWeek;
-            this.startHour = startHour;
-            this.startMinute = startMinute;
-            this.endHour = endHour;
-            this.endMinute = endMinute;
-            this.tzInfo = tzInfo;
-            this.price = price;
+            this.DayOfWeek = dayOfWeek;
+            this.StartHour = startHour;
+            this.StartMinute = startMinute;
+            this.EndHour = endHour;
+            this.EndMinute = endMinute;
+            this.TzInfo = tzInfo;
+            this.Price = price;
         }
 
-        public static List<VerifiedParkingRate> getVerifiedRates(UnverifiedParkingRateInput rate)
+        public static List<VerifiedParkingRate> GetVerifiedRates(UnverifiedParkingRateInput rate)
         {
             var verifiedRates = new List<VerifiedParkingRate>();
 
@@ -71,11 +71,11 @@ namespace SpotHero_Backend_Challenge
             // format: "0900-2100",
             var startHHMM = rate.times.Split('-')[0];
             var startHour = int.Parse(startHHMM.Substring(0, 2));
-            var startMinute = int.Parse(startHHMM.Substring(2));
+            var startMinute = int.Parse(startHHMM[2..]);
 
             var endHHMM = rate.times.Split('-')[1];
             var endHour = int.Parse(endHHMM.Substring(0, 2));
-            var endMinute = int.Parse(endHHMM.Substring(2));
+            var endMinute = int.Parse(endHHMM[2..]);
 
             // IANA timezone format
             var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(rate.tz);
