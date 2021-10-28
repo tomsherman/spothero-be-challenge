@@ -7,9 +7,9 @@ namespace SpotHero_Backend_Challenge
     public class ParkingRateCollection
     {
         [Required]
-        public List<ParkingRate> rates { get; set; } = new List<ParkingRate>();
+        public List<UnverifiedParkingRateInput> rates { get; set; } = new List<UnverifiedParkingRateInput>();
 
-        public ParkingRateCollection(List<ParkingRate> rates)
+        public ParkingRateCollection(List<UnverifiedParkingRateInput> rates)
         {
             if (rates == null) throw new ArgumentNullException();
             if (rates.Count == 0) throw new ArgumentException();

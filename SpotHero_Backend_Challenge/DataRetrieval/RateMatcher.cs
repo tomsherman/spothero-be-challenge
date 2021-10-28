@@ -8,23 +8,19 @@ namespace SpotHero_Backend_Challenge
         public static Price getPrice(DateTime start, DateTime end)
         {
             var timeSpan = end - start;
-            if (timeSpan.TotalDays > 0 && timeSpan.TotalDays <= 1)
-            {
-                // use requested start date to generate a slate of rate instances
-                // near the requested timeframe
-                var rateInstances = getRateInstances(start);
-                foreach (ParkingRateInstance rateInstance in rateInstances)
-                {
-                    if (rateInstance.start <= start && rateInstance.end >= end)
-                    {
-                        // guaranteed no overlap; exit early
-                        return rateInstance.price;
-                    }
-                }
-            }
-            else
-            {
+            if (timeSpan.TotalDays <= 0 || timeSpan.TotalDays > 1)
                 throw new ArgumentOutOfRangeException("Invalid date range. Specify a range of 24 hours or less.");
+
+            // use requested start date to generate a slate of rate instances
+            // near the requested timeframe
+            var rateInstances = getRateInstances(start);
+            foreach (ParkingRateInstance rateInstance in rateInstances)
+            {
+                if (rateInstance.start <= start && rateInstance.end >= end)
+                {
+                    // guaranteed no overlap; exit early
+                    return rateInstance.price;
+                }
             }
 
             // valid input but no matching rate instance
@@ -33,47 +29,16 @@ namespace SpotHero_Backend_Challenge
 
         private static List<ParkingRateInstance> getRateInstances(DateTime date)
         {
-            var rates = Retriever.getRates();
-
-            var allRateInstances = new List<ParkingRateInstance>();
-            foreach (ParkingRate rate in rates.rates)
-            {
-                allRateInstances.AddRange(generateRateInstance(rate, date.AddDays(-1))); // preceding day
-                allRateInstances.AddRange(generateRateInstance(rate, date));
-                allRateInstances.AddRange(generateRateInstance(rate, date.AddDays(+1))); // next day
-            }
-
-            
-            return allRateInstances;
-        }
-
-        private static List<ParkingRateInstance> generateRateInstance(ParkingRate rate, DateTime date)
-        {
             var rateInstances = new List<ParkingRateInstance>();
+            var rateCollection = Retriever.getRates();
 
-            // format: "0900-2100",
-            var startHHMM = rate.times.Split('-')[0];
-            var startHour = int.Parse(startHHMM.Substring(0, 2));
-            var startMinute = int.Parse(startHHMM.Substring(2));
-
-            var endHHMM = rate.times.Split('-')[1];
-            var endHour = int.Parse(endHHMM.Substring(0, 2));
-            var endMinute = int.Parse(endHHMM.Substring(2));
-
-            var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(rate.tz);
-
-            var dateBase = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
-            var midnight = TimeZoneInfo.ConvertTime(dateBase, tzInfo);
-
-            foreach (string day in rate.days.Split(",", StringSplitOptions.RemoveEmptyEntries))
+            foreach (UnverifiedParkingRateInput rateInput in rateCollection.rates)
             {
-                // todo real date
-                if (midnight.ToString("ddd").ToLower() == day)
+                var verifiedRates = VerifiedParkingRate.getVerifiedRates(rateInput);
+                foreach(VerifiedParkingRate verifiedRate in verifiedRates)
                 {
-                    var rateInstanceStart = TimeZoneInfo.ConvertTime(midnight.AddHours(startHour).AddMinutes(startMinute), tzInfo);
-                    var rateInstanceEnd = TimeZoneInfo.ConvertTime(midnight.AddHours(endHour).AddMinutes(endMinute), tzInfo);
-
-                    rateInstances.Add(new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.price));
+                    var instance = ParkingRateInstance.getRateInstance(verifiedRate, date);
+                    if (instance != null) rateInstances.Add(instance);
                 }
             }
 

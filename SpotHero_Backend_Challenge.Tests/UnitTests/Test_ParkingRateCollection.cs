@@ -18,7 +18,7 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         [Fact]
         public void EmptyRateList()
         {
-            Action instantiation = () => new ParkingRateCollection(new List<ParkingRate>() { });
+            Action instantiation = () => new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { });
             instantiation.Should().Throw<ArgumentException>();
         }
 

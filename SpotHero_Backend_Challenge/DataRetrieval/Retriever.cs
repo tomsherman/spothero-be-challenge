@@ -12,8 +12,8 @@ namespace SpotHero_Backend_Challenge
 
         public static ParkingRateCollection getRates()
         {
-            var rates = db.GetCollection<ParkingRate>("Rates").Find<ParkingRate>(FilterDefinition<ParkingRate>.Empty);
-            return new ParkingRateCollection(rates.ToList<ParkingRate>());
+            var rates = db.GetCollection<UnverifiedParkingRateInput>("Rates").Find<UnverifiedParkingRateInput>(FilterDefinition<UnverifiedParkingRateInput>.Empty);
+            return new ParkingRateCollection(rates.ToList<UnverifiedParkingRateInput>());
         }
 
         public static void updateRates(ParkingRateCollection rateCollection)
@@ -24,13 +24,13 @@ namespace SpotHero_Backend_Challenge
 
             // test validity of input rates by creating rate instances
             // if any rate is invalid, an exception is thrown, and the update will fail in its entirety
-            foreach(ParkingRate rate in rateCollection.rates)
+            foreach(UnverifiedParkingRateInput rate in rateCollection.rates)
             {
-                var testInstances = ParkingRateInstance.getRateInstances(rate, DateTime.Now);
+                VerifiedParkingRate.getVerifiedRates(rate);
             }
 
             db.DropCollection("Rates");
-            db.GetCollection<ParkingRate>("Rates").InsertMany(rateCollection.rates);
+            db.GetCollection<UnverifiedParkingRateInput>("Rates").InsertMany(rateCollection.rates);
         }
 
         public static void seedRates()
@@ -71,35 +71,35 @@ namespace SpotHero_Backend_Challenge
             //    ]
             //}
 
-            var rate1 = new ParkingRate()
+            var rate1 = new UnverifiedParkingRateInput()
             {
                 days = "mon,tues,thurs",
                 times = "0900-2100",
                 tz = "America/Chicago",
                 price = 1500
             };
-            var rate2 = new ParkingRate()
+            var rate2 = new UnverifiedParkingRateInput()
             {
                 days = "fri,sat,sun",
                 times = "0900-2100",
                 tz = "America/Chicago",
                 price = 2000
             };
-            var rate3 = new ParkingRate()
+            var rate3 = new UnverifiedParkingRateInput()
             {
                 days = "wed",
                 times = "0600-1800",
                 tz = "America/Chicago",
                 price = 1750
             };
-            var rate4 = new ParkingRate()
+            var rate4 = new UnverifiedParkingRateInput()
             {
                 days = "mon,wed,sat",
                 times = "0100-0500",
                 tz = "America/Chicago",
                 price = 1000
             };
-            var rate5 = new ParkingRate()
+            var rate5 = new UnverifiedParkingRateInput()
             {
                 days = "sun,tues",
                 times = "0100-0700",
@@ -107,7 +107,7 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            var sampleRates = new ParkingRateCollection(new List<ParkingRate>() { rate1, rate2, rate3, rate4, rate5 });
+            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
             updateRates(sampleRates);
         }
     }

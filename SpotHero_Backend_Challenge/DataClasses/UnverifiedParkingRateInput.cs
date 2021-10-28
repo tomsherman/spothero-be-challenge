@@ -13,7 +13,7 @@ namespace SpotHero_Backend_Challenge
     //    "tz": "America/Chicago",
     //    "price": 1500
     //}
-    public class ParkingRate
+    public class UnverifiedParkingRateInput
     {
         [BsonId]
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
