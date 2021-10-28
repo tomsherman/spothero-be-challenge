@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using FluentAssertions;
 
-namespace SpotHero_Backend_Challenge.Tests.UnitTests
+namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
 {
     public class Test_RateMatcher
     {

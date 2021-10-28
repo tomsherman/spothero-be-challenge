@@ -39,5 +39,16 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
             instantiation.Should().Throw<ArgumentOutOfRangeException>();
         }
 
+        [Fact]
+        public void GetRateInstance_NullInput()
+        {
+            Action factory = () =>
+            {
+                //var verifiedRate = new VerifiedParkingRate("mon", 5, 0, 10, 0, TimeZoneInfo.Local, 1000);
+                ParkingRateInstance.getRateInstance(null, DateTime.Now);
+            };
+            factory.Should().Throw<ArgumentNullException>();
+        }
+
     }
 }

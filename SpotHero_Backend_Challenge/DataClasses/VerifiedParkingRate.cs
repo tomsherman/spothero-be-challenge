@@ -36,14 +36,16 @@ namespace SpotHero_Backend_Challenge
         public VerifiedParkingRate(string dayOfWeek, int startHour, int startMinute, int endHour, int endMinute, TimeZoneInfo tzInfo, int price)
         {
             if (!nonStandardDayOfWeekDictionary.ContainsKey(dayOfWeek)) 
-                throw new ArgumentOutOfRangeException($"invalid day specified: {dayOfWeek}");
+                throw new ArgumentException($"invalid day specified: {dayOfWeek}");
 
-            if (startHour < 0 || startHour > 23) throw new ArgumentOutOfRangeException();
-            if (endHour < 0 || endHour > 23) throw new ArgumentOutOfRangeException();
-            if (startMinute < 0 || startMinute > 59) throw new ArgumentOutOfRangeException();
-            if (endMinute < 0 || endMinute > 59) throw new ArgumentOutOfRangeException();
-            if (tzInfo == null) throw new ArgumentNullException();
-            if (price < 0) throw new ArgumentOutOfRangeException();
+            if (startHour < 0 || startHour > 23) throw new ArgumentException();
+            if (endHour < 0 || endHour > 23) throw new ArgumentException();
+            if (startMinute < 0 || startMinute > 59) throw new ArgumentException();
+            if (endMinute < 0 || endMinute > 59) throw new ArgumentException();
+            if (tzInfo == null) throw new ArgumentException();
+            if (price <= 0) throw new ArgumentException();
+            if (startHour > endHour) throw new ArgumentException();
+            if (startHour == endHour && startMinute >= endMinute) throw new ArgumentException();
 
             this.dayOfWeek = dayOfWeek;
             this.startHour = startHour;
