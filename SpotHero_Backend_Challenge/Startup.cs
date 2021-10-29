@@ -29,18 +29,9 @@ namespace SpotHero_Backend_Challenge
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SpotHero Backend Challenge", Version = "v1" });
                 c.EnableAnnotations();
-                //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                //if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath); 
-                
-                // todo figure out error in linux docker container
-
-//                unhandled exception was thrown by the application.
-//2021 - 10 - 28T06: 47:28.439988340Z:[INFO]  System.IO.FileNotFoundException: Could not find file '/home/site/wwwroot/SpotHero_Backend_Challenge.xml'.
-//2021 - 10 - 28T06: 47:28.440146451Z:[INFO]  File name: '/home/site/wwwroot/SpotHero_Backend_Challenge.xml'
             });
 
-            // initial data
+            // initial data, per requirements
             Retriever.SeedRates();
         }
 

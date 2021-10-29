@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.ComponentModel.DataAnnotations;
 
 namespace SpotHero_Backend_Challenge
 {
     /// <summary>
-    /// Represents an instance of an offered rate that encompasses lte 24 hours of parking time
+    /// Represents an instance of an offered rate that encompasses less than or equal to 24 hours of parking time
     /// </summary>
+    /// <remarks>
+    /// As this is an offering in a specific time range, timezone is irrelevant here. 
+    /// </remarks>
     public class ParkingRateInstance
     {
         public Price Price { get; set; }
@@ -33,10 +32,13 @@ namespace SpotHero_Backend_Challenge
 
             var abbrevDay = date.ToString("ddd").ToLower(); // e.g. "tue"
 
+            // create a date that represents midnight in the given timezone
+            // this is used as a "base" to calculate time slot pricing
             var dateBase = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
             var midnight = TimeZoneInfo.ConvertTime(dateBase, rate.TzInfo);
 
             // compare day of input date to day in rate definition
+            // uses specific timezone
             if (abbrevDay == rate.DayOfWeek)
             {
                 var rateInstanceStart = midnight.AddHours(rate.StartHour).AddMinutes(rate.StartMinute);

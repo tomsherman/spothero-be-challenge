@@ -4,6 +4,9 @@ using MongoDB.Driver;
 
 namespace SpotHero_Backend_Challenge
 {
+    /// <summary>
+    /// Contains methods for maintaining rates in the database.
+    /// </summary>
     public class Retriever
     {
         private readonly static MongoClient client = new MongoClient("mongodb://default-whatevs:DFrMN1f2ApCC3q0la7sZGIipAeEntn1DKs9uH4pBLH8z35yROCpD9M0qXGF9ZTuaQ5vAvSapxHQXUBXGYIRbaQ==@default-whatevs.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@default-whatevs@");  
@@ -11,6 +14,7 @@ namespace SpotHero_Backend_Challenge
 
         public static ParkingRateCollection GetRates()
         {
+            // All rate documents in db. No filter.
             var rates = db.GetCollection<UnverifiedParkingRateInput>("Rates").Find<UnverifiedParkingRateInput>(FilterDefinition<UnverifiedParkingRateInput>.Empty);
             return new ParkingRateCollection(rates.ToList<UnverifiedParkingRateInput>());
         }
@@ -28,10 +32,15 @@ namespace SpotHero_Backend_Challenge
                 VerifiedParkingRate.GetVerifiedRates(rate);
             }
 
+            // idempotent
+            // always clear before adding
             db.DropCollection("Rates");
             db.GetCollection<UnverifiedParkingRateInput>("Rates").InsertMany(rateCollection.rates);
         }
 
+        /// <summary>
+        /// Seeds the database with rates provided in the challenge.
+        /// </summary>
         public static void SeedRates()
         {
 
