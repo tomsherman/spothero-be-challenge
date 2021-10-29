@@ -9,6 +9,9 @@ namespace SpotHero_Backend_Challenge
         [Required]
         public List<UnverifiedParkingRateInput> rates { get; set; } = new List<UnverifiedParkingRateInput>();
 
+        // parameterless constructor for serialization purposes
+        public ParkingRateCollection() { }
+
         public ParkingRateCollection(List<UnverifiedParkingRateInput> rates)
         {
             if (rates == null) throw new ArgumentNullException();

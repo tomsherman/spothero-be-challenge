@@ -115,7 +115,15 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
+            // todo restore
+            //var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
+            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { new UnverifiedParkingRateInput()
+            {
+                days = "wed",
+                times = "0600-1800",
+                tz = "Africa/Cairo",
+                price = 5555
+            } });
             UpdateRates(sampleRates);
         }
     }
