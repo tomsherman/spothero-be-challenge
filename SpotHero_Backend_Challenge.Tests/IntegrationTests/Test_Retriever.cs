@@ -24,7 +24,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void SeedRates()
         {
-            Action seed = () => Retriever.SeedRates();
+            Action seed = () => Retriever.SeedRatesChicago();
             seed.Should().NotThrow();
         }
 

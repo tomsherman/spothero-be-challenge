@@ -26,7 +26,7 @@ namespace SpotHero_Backend_Challenge
             // determine if any rate instance fully contains the time span requested
             foreach (ParkingRateInstance rateInstance in rateInstances)
             {
-                if (rateInstance.Start <= start && rateInstance.End >= end)
+                if (start >= rateInstance.Start && end <= rateInstance.End)
                 {
                     // guaranteed no overlap; exit early
                     return rateInstance.Price;

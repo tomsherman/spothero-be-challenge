@@ -10,7 +10,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void ValidPrice_Chicago()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesChicago(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -25,7 +25,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void ValidPriceMaxDuration_Cairo()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesCairo(); // idempotent
 
             //{
             //    days = "wed",
@@ -42,7 +42,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void ValidPriceMaxDuration_Chicago()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesChicago(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -57,7 +57,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void NoParkingRateAvailable()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesChicago(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -72,7 +72,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void InvalidTimeFrame_MoreThan24Hours()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesChicago(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -87,7 +87,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void InvalidTimeFrame_NoActualTimeRange()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesChicago(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -102,7 +102,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         [Fact]
         public void InvalidTimeFrame_IllogicalTimeFrame()
         {
-            Retriever.SeedRates(); // idempotent
+            Retriever.SeedRatesChicago(); // idempotent
 
             //{
             //  "days": "mon,tues,thurs",
@@ -117,51 +117,27 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         private DateTime tuesday10AM_Chicago { 
             get
             {
-                var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("America/Chicago");
-                var utcDate = new DateTime(2021, 10, 26, 10, 00, 00, DateTimeKind.Unspecified);
-                var date = TimeZoneInfo.ConvertTime(utcDate, tzInfo);
-                return date;
+                var localMidnight = getLocalMidnightInUtc(2021, 10, 26, "America/Chicago");
+                return localMidnight.AddHours(10);
             }
         }
-
-        //private DateTime tuesday10AM_Cairo
-        //{
-        //    get
-        //    {
-        //        var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Africa/Cairo");
-        //        var utcDate = new DateTime(2021, 10, 26, 10, 00, 00, DateTimeKind.Unspecified);
-        //        var date = TimeZoneInfo.ConvertTime(utcDate, tzInfo);
-        //        return date;
-        //    }
-        //}
 
         private DateTime wednesday6AM_Cairo
         {
             get
             {
-                var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Africa/Cairo");
-                var utcDate = new DateTime(2021, 10, 27, 0, 00, 00, DateTimeKind.Utc);
-                var localMidnight = utcDate + tzInfo.GetUtcOffset(utcDate);
-                var date = localMidnight.AddHours(6);
-                return date;
+                var localMidnight = getLocalMidnightInUtc(2021, 10, 27, "Africa/Cairo");
+                return localMidnight.AddHours(6);
             }
         }
 
-
-        /*
-         * 
-         * 
-            // create a date that represents midnight in the given timezone
-            // this is used as a "base" to calculate time slot pricing
-            var dateBase = new DateTimeOffset(startDate.Year, startDate.Month, startDate.Day, 00, 00, 00, startDate.Offset);
-
-
-
-            // todo test with rates in Cairo time but input in Chicago time
-            DateTimeOffset midnight = TimeZoneInfo.ConvertTime(dateBase, rate.TzInfo);
-         * 
-         * 
-         * */
+        private static DateTime getLocalMidnightInUtc(int year, int month, int day, string ianaTimezone)
+        {
+            var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(ianaTimezone);
+            var utcDate = new DateTime(year, month, day, 00, 00, 00, DateTimeKind.Utc);
+            var localMidnight = utcDate + tzInfo.GetUtcOffset(utcDate);
+            return localMidnight;
+        }
 
     }
 }

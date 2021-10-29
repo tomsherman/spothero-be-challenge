@@ -32,7 +32,7 @@ namespace SpotHero_Backend_Challenge
             });
 
             // initial data, per requirements
-            Retriever.SeedRates();
+            Retriever.SeedRatesChicago();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

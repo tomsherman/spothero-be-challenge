@@ -68,9 +68,14 @@
             Contains methods for maintaining rates in the database.
             </summary>
         </member>
-        <member name="M:SpotHero_Backend_Challenge.Retriever.SeedRates">
+        <member name="M:SpotHero_Backend_Challenge.Retriever.SeedRatesChicago">
             <summary>
             Seeds the database with rates provided in the challenge.
+            </summary>
+        </member>
+        <member name="M:SpotHero_Backend_Challenge.Retriever.SeedRatesCairo">
+            <summary>
+            Seeds the database with test data in Cairo's timezone
             </summary>
         </member>
     </members>

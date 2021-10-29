@@ -89,7 +89,7 @@ namespace SpotHero_Backend_Challenge
         {
             try
             {
-                Retriever.SeedRates();
+                Retriever.SeedRatesChicago();
             }
             catch
             {

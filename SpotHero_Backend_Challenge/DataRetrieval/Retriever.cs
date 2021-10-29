@@ -41,7 +41,7 @@ namespace SpotHero_Backend_Challenge
         /// <summary>
         /// Seeds the database with rates provided in the challenge.
         /// </summary>
-        public static void SeedRates()
+        public static void SeedRatesChicago()
         {
 
             // {
@@ -115,8 +115,15 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            // todo restore
-            //var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
+            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
+            UpdateRates(sampleRates);
+        }
+
+        /// <summary>
+        /// Seeds the database with test data in Cairo's timezone
+        /// </summary>
+        public static void SeedRatesCairo()
+        {
             var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() {
                 new UnverifiedParkingRateInput()             {
                     days = "mon,tues,thurs",
@@ -132,7 +139,6 @@ namespace SpotHero_Backend_Challenge
                 price = 4444
                 }
             });
-
             UpdateRates(sampleRates);
         }
     }

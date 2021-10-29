@@ -12,15 +12,16 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         [InlineData(-1)]
         public void InvalidPrice(int price)
         {
-            Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(-1), DateTime.Now, price);
-            instantiation.Should().Throw<ArgumentOutOfRangeException>();
+            Action instantiation = () => new VerifiedParkingRate("mon", 6, 0, 18, 0, TimeZoneInfo.Local, price);
+            instantiation.Should().Throw<ArgumentException>();
         }
 
         [Theory]
         [InlineData(10)]
         public void ValidPrice(int price)
         {
-            Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(-1), DateTime.Now, price);
+            var rate = new VerifiedParkingRate("mon", 6, 0, 18, 0, TimeZoneInfo.Local, price);
+            Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(-1), DateTime.Now, rate);
             instantiation.Should().NotBeNull();
         }
 
@@ -28,14 +29,16 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         public void InvalidDateRange_Same()
         {
             var now = DateTime.Now;
-            Action instantiation = () => new ParkingRateInstance(now, now, 10);
+            var rate = new VerifiedParkingRate("mon", 6, 0, 18, 0, TimeZoneInfo.Local, 1000);
+            Action instantiation = () => new ParkingRateInstance(now, now, rate);
             instantiation.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [Fact]
         public void InvalidDateRange_StartEndInvalid()
         {
-            Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(1), DateTime.Now, 10);
+            var rate = new VerifiedParkingRate("mon", 6, 0, 18, 0, TimeZoneInfo.Local, 1000);
+            Action instantiation = () => new ParkingRateInstance(DateTime.Now.AddHours(1), DateTime.Now, rate);
             instantiation.Should().Throw<ArgumentOutOfRangeException>();
         }
 
