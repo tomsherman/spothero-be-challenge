@@ -23,33 +23,25 @@ namespace SpotHero_Backend_Challenge
             this.Price = new Price(price);
         }
 
-        public static ParkingRateInstance GetRateInstance(VerifiedParkingRate rate, DateTime date)
+        public static ParkingRateInstance GetRateInstance(VerifiedParkingRate rate, DateTime startDate)
         {
             if (rate == null) throw new ArgumentNullException();
-            if (date == null) throw new ArgumentNullException();
+            if (startDate == null) throw new ArgumentNullException();
 
             ParkingRateInstance rateInstance = null;
 
-            var abbrevDay = date.ToString("ddd").ToLower(); // e.g. "tue"
-
             // create a date that represents midnight in the given timezone
             // this is used as a "base" to calculate time slot pricing
-            var dateBase = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Utc);
-            var midnight = TimeZoneInfo.ConvertTime(dateBase, rate.TzInfo);
-
-            // compare day of input date to day in rate definition
-            // uses specific timezone
-            if (abbrevDay == rate.DayOfWeek)
-            {
-                var rateInstanceStart = midnight.AddHours(rate.StartHour).AddMinutes(rate.StartMinute);
-                var rateInstanceEnd = midnight.AddHours(rate.EndHour).AddMinutes(rate.EndMinute);
-                rateInstance = new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.Price);
-            }
+            var utcMidnight = new DateTime(startDate.Year, startDate.Month, startDate.Day, 00, 00, 00, DateTimeKind.Utc);
+            var localMidnight = TimeZoneInfo.ConvertTimeFromUtc(utcMidnight, rate.TzInfo);
+            var rateInstanceStart = localMidnight.AddHours(rate.StartHour).AddMinutes(rate.StartMinute);
+            var rateInstanceEnd = localMidnight.AddHours(rate.EndHour).AddMinutes(rate.EndMinute);
+            rateInstance = new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate.Price);
 
             return rateInstance;
         }
 
-        private static void validateInputs(DateTime start, DateTime end, int price)
+        private static void validateInputs(DateTimeOffset start, DateTimeOffset end, int price)
         {
             if (start == null) throw new ArgumentNullException();
             if (end == null) throw new ArgumentNullException();

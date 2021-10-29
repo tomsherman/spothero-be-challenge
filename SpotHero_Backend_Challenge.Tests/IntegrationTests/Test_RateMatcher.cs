@@ -8,7 +8,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
     {
 
         [Fact]
-        public void ValidPrice()
+        public void ValidPrice_Chicago()
         {
             Retriever.SeedRates(); // idempotent
 
@@ -23,7 +23,24 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
         }
 
         [Fact]
-        public void ValidPriceMaxDuration()
+        public void ValidPriceMaxDuration_Cairo()
+        {
+            Retriever.SeedRates(); // idempotent
+
+            //{
+            //    days = "wed",
+            //    times = "0600-1800",
+            //    tz = "Africa/Cairo",
+            //    price = 4444
+            //}
+            var price = RateMatcher.GetPrice(wednesday6AM_Cairo, wednesday6AM_Cairo.AddHours(12)); // todo full span test case
+            price.Should().NotBeNull();
+        }
+
+        // todo test with rates in Cairo time but input in Chicago time
+
+        [Fact]
+        public void ValidPriceMaxDuration_Chicago()
         {
             Retriever.SeedRates(); // idempotent
 
@@ -101,11 +118,50 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
             get
             {
                 var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("America/Chicago");
-                var utcDate = new DateTime(2021, 10, 26, 10, 00, 00, DateTimeKind.Utc);
+                var utcDate = new DateTime(2021, 10, 26, 10, 00, 00, DateTimeKind.Unspecified);
                 var date = TimeZoneInfo.ConvertTime(utcDate, tzInfo);
                 return date;
             }
         }
+
+        //private DateTime tuesday10AM_Cairo
+        //{
+        //    get
+        //    {
+        //        var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Africa/Cairo");
+        //        var utcDate = new DateTime(2021, 10, 26, 10, 00, 00, DateTimeKind.Unspecified);
+        //        var date = TimeZoneInfo.ConvertTime(utcDate, tzInfo);
+        //        return date;
+        //    }
+        //}
+
+        private DateTime wednesday6AM_Cairo
+        {
+            get
+            {
+                var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Africa/Cairo");
+                var utcDate = new DateTime(2021, 10, 27, 0, 00, 00, DateTimeKind.Utc);
+                var localMidnight = utcDate + tzInfo.GetUtcOffset(utcDate);
+                var date = localMidnight.AddHours(6);
+                return date;
+            }
+        }
+
+
+        /*
+         * 
+         * 
+            // create a date that represents midnight in the given timezone
+            // this is used as a "base" to calculate time slot pricing
+            var dateBase = new DateTimeOffset(startDate.Year, startDate.Month, startDate.Day, 00, 00, 00, startDate.Offset);
+
+
+
+            // todo test with rates in Cairo time but input in Chicago time
+            DateTimeOffset midnight = TimeZoneInfo.ConvertTime(dateBase, rate.TzInfo);
+         * 
+         * 
+         * */
 
     }
 }

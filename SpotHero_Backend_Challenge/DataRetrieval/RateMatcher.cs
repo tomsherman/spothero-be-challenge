@@ -12,6 +12,9 @@ namespace SpotHero_Backend_Challenge
         /// <param name="end">requested end date for parking</param>
         public static Price GetPrice(DateTime start, DateTime end)
         {
+            start = DateTime.SpecifyKind(start, DateTimeKind.Utc);
+            end = DateTime.SpecifyKind(end, DateTimeKind.Utc);
+
             var timeSpan = end - start;
             if (timeSpan.TotalDays <= 0 || timeSpan.TotalDays > 1)
                 throw new ArgumentOutOfRangeException("Invalid date range. Specify a range of 24 hours or less.");

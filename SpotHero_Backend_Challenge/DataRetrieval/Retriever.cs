@@ -117,13 +117,22 @@ namespace SpotHero_Backend_Challenge
 
             // todo restore
             //var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
-            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { new UnverifiedParkingRateInput()
-            {
+            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() {
+                new UnverifiedParkingRateInput()             {
+                    days = "mon,tues,thurs",
+                    times = "0900-2100",
+                    tz = "Africa/Cairo",
+                    price = 4444
+                },
+                new UnverifiedParkingRateInput()
+                {
                 days = "wed",
                 times = "0600-1800",
                 tz = "Africa/Cairo",
-                price = 5555
-            } });
+                price = 4444
+                }
+            });
+
             UpdateRates(sampleRates);
         }
     }
