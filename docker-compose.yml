@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  spothero_backend_challenge:
+    image: ${DOCKER_REGISTRY-}spotherobackendchallenge
+    build:
+      context: .
+      dockerfile: SpotHero_Backend_Challenge/Dockerfile

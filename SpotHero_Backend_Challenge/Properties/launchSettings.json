@@ -30,7 +30,11 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/",
-      "publishAllPorts": true
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "http://+:5000"
+      },
+      "httpPort": 5000,
+      "useSSL": false
     }
   }
 }
