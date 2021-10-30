@@ -55,7 +55,7 @@ namespace SpotHero_Backend_Challenge
             }
         }
 
-        [SwaggerOperation("Retrieves the price of a parking spot available during the specified time frame")]
+        [SwaggerOperation("Retrieves the price of a parking spot available during the specified time frame.", "Uses ISO-8601 style date inputs. The `price-epoch` endpoint is recommended because ['time' can change](https://codeblog.jonskeet.uk/2019/03/27/storing-utc-is-not-a-silver-bullet/).")]
         [HttpGet("price")]
         [SwaggerResponse(404, "No parking available for the specified time frame")]
         [SwaggerResponse(200, "Price of parking for the specified time frame")]
@@ -82,33 +82,32 @@ namespace SpotHero_Backend_Challenge
             return price;
         }
 
-        // todo
-        //[SwaggerOperation("Retrieves the price of a parking spot available during the specified time frame")]
-        //[HttpGet("price")]
-        //[SwaggerResponse(404, "No parking available for the specified time frame")]
-        //[SwaggerResponse(200, "Price of parking for the specified time frame")]
-        //[SwaggerResponse(412, "Invalid input")]
-        //[SwaggerResponse(500, "Unspecified error")]
-        //public Price GetPrice(int epochSecondsStart, int epochSecondsEnd, string ianaTimezone)
-        //{
-        //    Price price = null;
+       [SwaggerOperation("Retrieves the price of a parking spot available during the specified time frame, using epoch time and a standard timezone.", "This endpoint is recommended over the /price endpoint to avoid edge cases involving timezone-related changes.")]
+       [HttpGet("price-epoch")]
+       [SwaggerResponse(404, "No parking available for the specified time frame")]
+       [SwaggerResponse(200, "Price of parking for the specified time frame")]
+       [SwaggerResponse(412, "Invalid input")]
+       [SwaggerResponse(500, "Unspecified error")]
+        public Price GetPrice(int epochSecondsStart, int epochSecondsEnd, string ianaTimezone)
+        {
+            Price price = null;
 
-        //    try
-        //    {
-        //        price = RateMatcher.GetPrice(epochSecondsStart, epochSecondsEnd, ianaTimezone);
-        //        if (price == null) Response.StatusCode = 404; // request was fine, but no matches
-        //    }
-        //    catch (ArgumentOutOfRangeException)
-        //    {
-        //        Response.StatusCode = 412; // precondition failed
-        //    }
-        //    catch (Exception)
-        //    {
-        //        Response.StatusCode = 500; // some other problem
-        //    }
+            try
+            {
+                price = RateMatcher.GetPrice(epochSecondsStart, epochSecondsEnd, ianaTimezone);
+                if (price == null) Response.StatusCode = 404; // request was fine, but no matches
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Response.StatusCode = 412; // precondition failed
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // some other problem
+            }
 
-        //    return price;
-        //}
+            return price;
+        }
 
         [HttpPut("reset")]
         [SwaggerOperation("Resets rates to the specified defaults", "Default rates: https://github.com/spothero/be-code-challenge#sample-json-for-testing")]
