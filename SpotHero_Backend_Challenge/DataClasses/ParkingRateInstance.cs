@@ -5,9 +5,6 @@ namespace SpotHero_Backend_Challenge
     /// <summary>
     /// Represents an instance of an offered rate that encompasses less than or equal to 24 hours of parking time
     /// </summary>
-    /// <remarks>
-    /// As this is an offering in a specific time range, timezone is irrelevant here. 
-    /// </remarks>
     public class ParkingRateInstance
     {
         public Price Price { get; set; }
@@ -48,8 +45,6 @@ namespace SpotHero_Backend_Challenge
             {
                 // irrelevant rate; does not apply to this day of week
             }
-
-
 
             return rateInstance;
         }

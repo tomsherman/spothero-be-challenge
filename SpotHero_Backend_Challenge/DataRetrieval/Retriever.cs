@@ -124,21 +124,43 @@ namespace SpotHero_Backend_Challenge
         /// </summary>
         public static void SeedRatesCairo()
         {
-            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() {
-                new UnverifiedParkingRateInput()             {
-                    days = "mon,tues,thurs",
-                    times = "0900-2100",
-                    tz = "Africa/Cairo",
-                    price = 4444
-                },
-                new UnverifiedParkingRateInput()
-                {
+            var rate1 = new UnverifiedParkingRateInput()
+            {
+                days = "mon,tues,thurs",
+                times = "0900-2100",
+                tz = "Africa/Cairo",
+                price = 1500
+            };
+            var rate2 = new UnverifiedParkingRateInput()
+            {
+                days = "fri,sat,sun",
+                times = "0900-2100",
+                tz = "Africa/Cairo",
+                price = 2000
+            };
+            var rate3 = new UnverifiedParkingRateInput()
+            {
                 days = "wed",
                 times = "0600-1800",
                 tz = "Africa/Cairo",
-                price = 4444
-                }
-            });
+                price = 1750
+            };
+            var rate4 = new UnverifiedParkingRateInput()
+            {
+                days = "mon,wed,sat",
+                times = "0100-0500",
+                tz = "Africa/Cairo",
+                price = 1000
+            };
+            var rate5 = new UnverifiedParkingRateInput()
+            {
+                days = "sun,tues",
+                times = "0100-0700",
+                tz = "Africa/Cairo",
+                price = 925
+            };
+
+            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
             UpdateRates(sampleRates);
         }
     }

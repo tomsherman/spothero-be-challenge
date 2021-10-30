@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 namespace SpotHero_Backend_Challenge
 {
+    /// <summary>
+    /// This class encapsulates logic related to matching rates offered by parking suppliers
+    /// to time slots requested by parkers.
+    /// </summary>
+    /// <remarks>Rates are specified only to the nearest minute, so methods in this class round to the nearest minute</remarks>
     public class RateMatcher
     {
+
         /// <summary>
         /// Given an input date range, retrieves rates from the database and looks for matches.
         /// </summary>
