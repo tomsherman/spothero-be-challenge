@@ -160,7 +160,8 @@ namespace SpotHero_Backend_Challenge
                 price = 925
             };
 
-            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
+            // var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate1, rate2, rate3, rate4, rate5 });
+            var sampleRates = new ParkingRateCollection(new List<UnverifiedParkingRateInput>() { rate3 });
             UpdateRates(sampleRates);
         }
     }

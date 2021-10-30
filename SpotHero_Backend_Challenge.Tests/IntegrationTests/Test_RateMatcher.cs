@@ -42,6 +42,7 @@ namespace SpotHero_Backend_Challenge.Tests.IntegrationTests
 
         [Theory]
         [InlineData("2021-10-27T06:00:00+02:00", "2021-10-27T18:00:00+02:00")] // Cairo rate, Cairo input
+        [InlineData("2021-10-26T23:00:00-05:00", "2021-10-27T11:00:00-05:00")] // Cairo rate, Chicago input
         public void ValidPrice_CairoRates(string startDateText, string endDateText)
         {
             Retriever.SeedRatesCairo(); // idempotent

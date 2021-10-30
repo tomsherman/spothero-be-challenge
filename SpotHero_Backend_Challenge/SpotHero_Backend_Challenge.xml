@@ -8,9 +8,6 @@
             <summary>
             Represents an instance of an offered rate that encompasses less than or equal to 24 hours of parking time
             </summary>
-            <remarks>
-            As this is an offering in a specific time range, timezone is irrelevant here. 
-            </remarks>
         </member>
         <member name="T:SpotHero_Backend_Challenge.Price">
             <summary>
@@ -49,14 +46,21 @@
             Price. Must be greater than zero.
             </summary>
         </member>
-        <member name="M:SpotHero_Backend_Challenge.RateMatcher.GetPrice(System.DateTime,System.DateTime)">
+        <member name="T:SpotHero_Backend_Challenge.RateMatcher">
+            <summary>
+            This class encapsulates logic related to matching rates offered by parking suppliers
+            to time slots requested by parkers.
+            </summary>
+            <remarks>Rates are specified only to the nearest minute, so methods in this class round to the nearest minute</remarks>
+        </member>
+        <member name="M:SpotHero_Backend_Challenge.RateMatcher.GetPrice(System.DateTimeOffset,System.DateTimeOffset)">
             <summary>
             Given an input date range, retrieves rates from the database and looks for matches.
             </summary>
             <param name="start">requested start date for parking</param>
             <param name="end">requested end date for parking</param>
         </member>
-        <member name="M:SpotHero_Backend_Challenge.RateMatcher.getRateInstances(System.DateTime)">
+        <member name="M:SpotHero_Backend_Challenge.RateMatcher.getRateInstances(System.DateTimeOffset)">
             <summary>
             
             </summary>

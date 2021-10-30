@@ -16,17 +16,20 @@ namespace SpotHero_Backend_Challenge
         /// </summary>
         /// <param name="start">requested start date for parking</param>
         /// <param name="end">requested end date for parking</param>
-        public static Price GetPrice(DateTime start, DateTime end)
+        public static Price GetPrice(DateTimeOffset start, DateTimeOffset end)
         {
-            start = DateTime.SpecifyKind(start, DateTimeKind.Utc);
-            end = DateTime.SpecifyKind(end, DateTimeKind.Utc);
+            // rates are specified only to the nearest minute. 
+            // round the start state down and the end date up
+            // to ensure the parking time request is fully satisfied
+            start = roundUpToNearestMinute(start);
+            end = roundUpToNearestMinute(end);
 
             var timeSpan = end - start;
             if (timeSpan.TotalDays <= 0 || timeSpan.TotalDays > 1)
                 throw new ArgumentOutOfRangeException("Invalid date range. Specify a range of 24 hours or less.");
 
-            // use requested start date to generate a slate of rate instances
-            // near the requested timeframe
+            // use requested start date to generate a day-of-week-specific slate of rate
+            // instances (e.g. on Wednesday--according to the timezone of the offered rate
             var rateInstances = getRateInstances(start);
 
             // determine if any rate instance fully contains the time span requested
@@ -48,7 +51,7 @@ namespace SpotHero_Backend_Challenge
         /// </summary>
         /// <param name="startDate">requested start date for parking</param>
         /// <returns></returns>
-        private static List<ParkingRateInstance> getRateInstances(DateTime startDate)
+        private static List<ParkingRateInstance> getRateInstances(DateTimeOffset startDate)
         {
             var rateInstances = new List<ParkingRateInstance>();
             var rateCollection = Retriever.GetRates();
@@ -63,6 +66,7 @@ namespace SpotHero_Backend_Challenge
 
                 foreach(VerifiedParkingRate verifiedRate in verifiedRates)
                 {
+                    // returns null if the rate is not applicable to the requested day of the week
                     var instance = ParkingRateInstance.GetRateInstance(verifiedRate, startDate);
                     if (instance != null) rateInstances.Add(instance);
                 }
@@ -70,6 +74,11 @@ namespace SpotHero_Backend_Challenge
 
             return rateInstances;
         }
- 
+
+        private static DateTime roundUpToNearestMinute(DateTimeOffset date)
+        {
+            return new DateTime((date.Ticks + date.Ticks - 1) / date.Ticks * date.Ticks);
+        }
+
     }
 }

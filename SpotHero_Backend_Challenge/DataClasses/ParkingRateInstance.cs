@@ -8,37 +8,65 @@ namespace SpotHero_Backend_Challenge
     public class ParkingRateInstance
     {
         public Price Price { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public DateTimeOffset Start { get; set; }
+        public DateTimeOffset End { get; set; }
         public VerifiedParkingRate SourceRate { get; set; }
 
-        public ParkingRateInstance(DateTime start, DateTime end, VerifiedParkingRate sourceRate)
+        public ParkingRateInstance(DateTimeOffset start, DateTimeOffset end, VerifiedParkingRate sourceRate)
         {
-            validateInputs(start, end, sourceRate);
+            validateInputs(start.LocalDateTime, end.LocalDateTime, sourceRate);
 
-            this.Start = start;
-            this.End = end;
+            this.Start = start.LocalDateTime;
+            this.End = end.LocalDateTime;
             this.Price = new Price(sourceRate.Price);
             this.SourceRate = sourceRate;
         }
 
-        public static ParkingRateInstance GetRateInstance(VerifiedParkingRate rate, DateTime startDate)
+        public static ParkingRateInstance GetRateInstance(VerifiedParkingRate rate, DateTimeOffset startDate)
         {
             if (rate == null) throw new ArgumentNullException();
             if (startDate == null) throw new ArgumentNullException();
 
             ParkingRateInstance rateInstance = null;
 
-            var localDayOfWeek = TimeZoneInfo.ConvertTimeFromUtc(startDate, rate.TzInfo).ToString("ddd").ToLower();
+            var startDateUtc = startDate.UtcDateTime;
+
+            var localDayOfWeek = TimeZoneInfo.ConvertTimeFromUtc(startDateUtc, rate.TzInfo).ToString("ddd").ToLower();
+
+            // todo off by one day!
 
             if (rate.DayOfWeek == localDayOfWeek)
             {
-                // create a date that represents midnight in the given timezone
-                // this is used as a "base" to calculate time slot pricing
-                var utcMidnight = new DateTime(startDate.Year, startDate.Month, startDate.Day, 00, 00, 00, DateTimeKind.Utc);
-                var localMidnight = TimeZoneInfo.ConvertTimeFromUtc(utcMidnight, rate.TzInfo);
-                var rateInstanceStart = localMidnight.AddHours(rate.StartHour).AddMinutes(rate.StartMinute);
-                var rateInstanceEnd = localMidnight.AddHours(rate.EndHour).AddMinutes(rate.EndMinute);
+                var midnightInInputTz = new DateTimeOffset(startDateUtc.Year,
+                    startDateUtc.Month,
+                    startDateUtc.Day, 
+                    00, 
+                    00, 
+                    00, 
+                    rate.TzInfo.GetUtcOffset(startDate));
+
+                //// adjust for GMT
+                //if (rate.TzInfo.GetUtcOffset(startDate).TotalSeconds > 0)
+                //{
+                //    midnightInInputTz.AddDays(1);
+                //}
+
+                //var midnightInInputTz = startDate
+                //    .UtcDateTime
+                //    .AddHours(-1 * startDate.Hour)
+                //    .AddMinutes(-1 * startDate.Minute)
+                //    .AddSeconds(-1 * startDate.Second)
+                //    .AddMilliseconds(-1 * startDate.Millisecond)
+                //    .UtcDateTime
+                //    .Subtract(rate.TzInfo.GetUtcOffset(startDate));
+
+                // represent the rate instances dates in the timezone of the offered rate
+                var rateInstanceStart = midnightInInputTz
+                    .AddHours(rate.StartHour)
+                    .AddMinutes(rate.StartMinute);
+                var rateInstanceEnd = midnightInInputTz
+                    .AddHours(rate.EndHour)
+                    .AddMinutes(rate.EndMinute);
                 rateInstance = new ParkingRateInstance(rateInstanceStart, rateInstanceEnd, rate);
             }
             else
@@ -49,7 +77,7 @@ namespace SpotHero_Backend_Challenge
             return rateInstance;
         }
 
-        private static void validateInputs(DateTimeOffset start, DateTimeOffset end, VerifiedParkingRate rate)
+        private static void validateInputs(DateTime start, DateTime end, VerifiedParkingRate rate)
         {
             if (start == null) throw new ArgumentNullException();
             if (end == null) throw new ArgumentNullException();
