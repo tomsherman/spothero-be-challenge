@@ -46,6 +46,18 @@ namespace SpotHero_Backend_Challenge
             return null;
         }
 
+        public static Price GetPrice(int epochSecondsStart, int epochSecondsEnd, string ianaTimezone)
+        {
+            var tzInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(ianaTimezone);
+            var startUtc = DateTimeOffset.FromUnixTimeSeconds(epochSecondsStart);
+            var endUtc = DateTimeOffset.FromUnixTimeSeconds(epochSecondsEnd);
+
+            var start = TimeZoneInfo.ConvertTimeFromUtc(startUtc.DateTime, tzInfo);
+            var end = TimeZoneInfo.ConvertTimeFromUtc(endUtc.DateTime, tzInfo);
+
+            return GetPrice(start, end);
+        }
+
         /// <summary>
         /// 
         /// </summary>

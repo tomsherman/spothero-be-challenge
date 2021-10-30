@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel;
 
 namespace SpotHero_Backend_Challenge
 {
@@ -73,6 +74,33 @@ namespace SpotHero_Backend_Challenge
             {
                 Response.StatusCode = 412; // precondition failed
             } 
+            catch (Exception)
+            {
+                Response.StatusCode = 500; // some other problem
+            }
+
+            return price;
+        }
+
+        [SwaggerOperation("Retrieves the price of a parking spot available during the specified time frame")]
+        [HttpGet("price")]
+        [SwaggerResponse(404, "No parking available for the specified time frame")]
+        [SwaggerResponse(200, "Price of parking for the specified time frame")]
+        [SwaggerResponse(412, "Invalid input")]
+        [SwaggerResponse(500, "Unspecified error")]
+        public Price GetPrice(int epochSecondsStart, int epochSecondsEnd, string ianaTimezone)
+        {
+            Price price = null;
+
+            try
+            {
+                price = RateMatcher.GetPrice(epochSecondsStart, epochSecondsEnd, ianaTimezone);
+                if (price == null) Response.StatusCode = 404; // request was fine, but no matches
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Response.StatusCode = 412; // precondition failed
+            }
             catch (Exception)
             {
                 Response.StatusCode = 500; // some other problem

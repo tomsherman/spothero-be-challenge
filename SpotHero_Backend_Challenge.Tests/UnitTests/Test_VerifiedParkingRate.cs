@@ -19,7 +19,7 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         [InlineData("mon", 0, 00, 23, 59, 1000)]
         public void ValidInputs(string dayOfWeek, int startHour, int startMinute, int endHour, int endMinute, int price)
         {
-            Action instantiation = () => new VerifiedParkingRate(dayOfWeek, startHour, startMinute, endHour, endMinute, TimeZoneInfo.Local, price);
+            Action instantiation = () => new VerifiedParkingRate(dayOfWeek, startHour, startMinute, endHour, endMinute, TimeZoneInfo.Utc, price);
             instantiation.Should().NotBeNull();
         }
 
@@ -37,7 +37,7 @@ namespace SpotHero_Backend_Challenge.Tests.UnitTests
         [InlineData("mon", 9, 00, 15, 00, -1)]
         public void InvalidInputs(string dayOfWeek, int startHour, int startMinute, int endHour, int endMinute, int price)
         {
-            Action instantiation = () => new VerifiedParkingRate(dayOfWeek, startHour, startMinute, endHour, endMinute, TimeZoneInfo.Local, price);
+            Action instantiation = () => new VerifiedParkingRate(dayOfWeek, startHour, startMinute, endHour, endMinute, TimeZoneInfo.Utc, price);
             instantiation.Should().Throw<ArgumentException>();
         }
     }
