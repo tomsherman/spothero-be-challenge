@@ -22,7 +22,7 @@ Time is hard to model well, [especially when it involves timezones and the futur
 
 ## Tests
 
-Tests are included in the `SpotHero_Backend_Challenge.Tests` project. They make heavy use of Theory tests in [Fluent Assertions](https://fluentassertions.com/), which is a nice and compact way to represent tests.
+Tests are included in the `SpotHero_Backend_Challenge.Tests` project. They make heavy use of [xUnit Theory tests](https://hovermind.com/xunit/fact-and-theory.html) in [Fluent Assertions](https://fluentassertions.com/), which is a nice and compact way to represent tests.
 
 ## A Note about Errors
 
